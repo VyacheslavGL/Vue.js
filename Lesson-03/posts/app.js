@@ -1,3 +1,5 @@
+// Проверка ГИТ пуша
+
 Vue.component('v-alert', {
     template: "#alert-template",
     //здесь type - название атрибута (пропса)
