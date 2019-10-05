@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Галерея мемов</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app" class="memes">
+        <div class="memes__item" v-for="name in memes">
+            <img class="memes__image" :src="'./images/' + name.src">
+            <div class="memes__title">{{ name.title }}</div>
+            <button type="button" class="btn btn--like">{{ name.likes }}</button>
+            <button type="button" class="btn btn--dislike">{{ name.dislikes }} </button>
+        </div>
+    </div>
+
+    <!-- версия для разработки, отображает полезные предупреждения в консоли -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

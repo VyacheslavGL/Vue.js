@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Hello World</title>
+    <style>
+        .message {
+            color: green;
+            margin: 15px 0;
+            border: 2px solid;
+            padding: 15px;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <h1>Кол-во кликов: {{ counter }}</h1>
+    <button @click="counter++">Кликнули: {{ counter }}</button>
+
+    <!--  условная отрисовка  -->
+    <div v-if="counter > 5" class="message">
+        Вы кликнули слишком много раз!
+    </div>
+    <p v-else>Кликайте ещё</p>
+
+    <ul>
+        <li v-for="name in names">{{ name }}</li>
+    </ul>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+    window.addEventListener("load", function() {
+       // объект app называют экземпляром приложения (инстанс вью)
+       const app = new Vue({
+          el: "#app",
+          // все свойства этого объекта станут реактивными
+          // в т.ч. вложенные массивы и объекты
+          // эти данные доступны в шаблоне как переменные
+          // все свойства этого объекта также становятся свойствами объекта app
+          data: {
+              counter: 0,
+              names: ["Иван", "Мария", "Светлана"],
+          },
+       });
+
+       // данные можно поменять через экземпляр приложения
+       // app.counter = 100500;
+
+       // setTimeout(() => { app.counter = 100500 }, 2500);
+    });
+</script>
+</body>
+</html>
