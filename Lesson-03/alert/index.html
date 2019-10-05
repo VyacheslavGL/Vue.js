@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Пример компонента для Vue</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+<div id="app" class="container">
+    <h1 class="mb-4"></h1>
+    <input v-model="showAlert" type="checkbox" id="check">
+    <label  for="check">Показать сообщение</label>
+
+    <button @click="toogleAlertVisibiliti" class="btn btn-primary">{{buttonCaption}}</button>
+
+    <v-alert v-if="showAlert" type="danger" text="Это текст сообщения"></v-alert>
+    <v-alert type="success" text="Это другой текст"></v-alert>
+    <v-alert :text="message"></v-alert>
+
+    <input v-model="message" type="text">
+</div>
+
+<script type="text/x-template" id="alert-template">
+    <div class="alert" :class="getClassName()">
+        {{text}}
+    </div>
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+<script>
+    Vue.component('v-alert', {
+        template: "#alert-template",
+        //здесь type - название атрибута (пропса)
+        props:{
+            type:{
+                default: "info",
+                type: String,
+            },
+            //text- другой атрибут
+            text: {
+                required: true,
+                type: String,
+            }
+        },
+        methods:{
+            getClassName(){
+                return{
+                    "alert-info": this.type === "info",
+                    "alert-danger": this.type === "danger",
+                    "alert-success": this.type === "success",
+                }
+            }
+        }
+    });
+
+    window.addEventListener("load", function () {
+        new Vue({
+            el: "#app",
+            data:{
+                showAlert: false,
+                message: "",
+            },
+            methods: {
+                toogleAlertVisibiliti(){
+                    this.showAlert = !this.showAlert;
+                }
+            },
+            //вычисляемое своиство используется для создания "зависимых" или "произвольных" данных,
+            //т.е тех свойств, значения которого полностью зависят от каких-то других свойств
+            computed:{
+                buttonCaption(){
+                    //обьявили вычисляемое свойство как функцию
+                    //т.е при попытке обращения к this.buttonCaption будет автоматом вызвана функция
+                    //если измениться состояние showAlert, значение свойства будет пересчитано автоматически
+                    return this.showAlert ? "Скрыть" : "Показать";
+                }
+            }
+        })
+    });
+</script>
+</body>
+</html>

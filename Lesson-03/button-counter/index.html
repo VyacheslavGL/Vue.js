@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Блог</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+<div class="container" id="app">
+    <button-counter></button-counter>
+    <button-counter></button-counter>
+    <button-counter></button-counter>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+window.addEventListener('load', () => {
+
+    //компанент зарегестрирован глобально
+    Vue.component('button-counter', {
+        template: `<button @click="inc" class="btn btn-secondary">Кол-во кликов: {{count}}</button>`,
+        //данная компанента должны быть описаны как обьект, возвращаемой функции
+        data(){
+            return{
+                count: 0,
+            }
+        },
+        methods:{
+            inc(){
+                this.count++;
+            }
+        }
+    });
+
+    new Vue({
+        el: "#app",
+    })
+})
+</script>
+</body>
+</html>
