@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Обработка форм</title>
+    <style>
+        .error{
+            color: red;
+            outline: 2px solid currentColor;
+            box-shadow: aqua;
+            /*outline-offset: 5px;*/
+        }
+    </style>
+</head>
+<body>
+
+<div id="app">
+<!--    <input @input="text=$event.target.value" :value="text" type="text">-->
+    <input v-model="text" type="text">
+    <button @click="changeText">Поменять текст</button>
+    <hr>
+    {{text}}
+    <hr>
+    <!--  .number автоматически приводит строку в число через parseFloat -->
+    <input :class="{'error': a === ''}" v-model.number="a" type="text">
+    <input :class="{'error': b === ''}" v-model.number="b" type="text">
+    <button @click="result('+')">+</button>
+    <button @click="result('-')">-</button>
+    <button @click="result('*')">*</button>
+    <button @click="result('/')">/</button>
+
+<!--    <h1>Результат вычисления равен = {{c}}</h1>-->
+    <h1>{{res}}</h1>
+    <!-- используется для группировки элементов и не отображается в разметке  -->
+
+    <template v-if="history.length > 0">
+        <h2>История операций</h2>
+        <table border="1">
+            <thead>
+            <tr>
+                <th>A</th>
+                <th>Действие</th>
+                <th>B</th>
+                <th>C</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="item in history">
+                <td>{{item.a}}</td>
+                <td>{{item.val}}</td>
+                <td>{{item.b}}</td>
+                <td>{{item.c}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </template>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+    window.addEventListener('load', () => {
+        const app = new Vue({
+            el: "#app",
+            data: {
+                text: 'Это текст в поле',
+                a:0,
+                b:0,
+                c:0,
+                res:'',
+                history:[]
+            },
+            methods: {
+                changeText() {
+                    this.text = 'Это новый техт'
+                },
+                result(value){
+                    if(value === '+'){
+                         this.c = this.a + this.b;
+                    }
+                    else if(value === '-'){
+                         this.c =this.a - this.b;
+                    }
+                    else if(value === '*'){
+                         this.c =this.a * this.b;
+                    }
+                    else if(value === '/'){
+                         this.c =this.a / this.b;
+                    }
+
+                    this.FormatResult(value);
+                    this.addToHistory(value)
+                },
+                FormatResult(val){
+                    const captions = {
+                        "+": "сложения",
+                        "-": "вычитания",
+                        "*": "умножения",
+                        "/": "деления",
+                    };
+
+                    this.res = `Результат ${captions[val]} ${this.a} ${val} ${this.b} = ${this.c}`;
+                },
+                addToHistory(val){
+                    this.history.push({
+                        a: this.a,
+                        b: this.b,
+                        c: this.c,
+                        val,
+                    })
+                }
+            },
+
+        })
+    });
+</script>
+</body>
+</html>
