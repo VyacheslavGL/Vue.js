@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Калькулятор стоимости услуг</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style>
+        .min {
+            /*background-color: aqua;*/
+            text-decoration: line-through;
+        }
+
+        .min2 {
+            /*background-color: aqua;*/
+            text-decoration: none;
+        }
+
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+<div class="container" id="discounts">
+    <h1 class="my-4">Выберите курсы</h1>
+    <div class="row">
+        <div class="col-sm-7">
+            <table class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>Название курса</th>
+                    <th>Макс.</th>
+                    <th>Сред.</th>
+                    <th>Мин.</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="course in courses">
+                    <td>{{ course.title }}</td>
+                    <!-- при клике в метод передается выбранный курс и ключ выбранного тарифа -->
+                    <!--                    :class="{getPriceMin(course, price), getTaxClassObject(course, price)}"-->
+                    <td
+                            v-for="(price, tax) in course.prices"
+                            @click="selectCurse(course, price, tax)"
+                            :class="getTaxClassObject(course, price)"
+
+                    >
+                        {{price}}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-sm-5">
+            <div class="card-body">
+                <template v-if="selectedCurses.length > 0">
+                    <div class="h5 mb-3">Выбранные курсы</div>
+                    <table class="table table-bordered">
+                        <tbody>
+                        <tr v-for="item in selectedCurses">
+                            <td>{{item.course.title}}</td>
+                            <td :class="myNout">{{item.price}}&nbsp;p.</td>
+
+                            <td v-if="mynotebook">{{ item.price - (item.price * 0.10) }}&nbsp;p.</td>
+<!--                            <td v-if="mynotebook">{{ itemTax(item.price)}}&nbsp;p.</td>-->
+<!--                            <td v-if="myfriend">{{ itemTax(item.tax)}}&nbsp;p.</td>-->
+
+                            <td v-else>{{item.discountPrice}}&nbsp;p.</td>
+                        </tr>
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <th class="text-right" colspan="2">
+                                Итого:
+                            </th>
+                            <td v-if="mynotebook">
+                                {{CountSum}}
+                            </td>
+                            <td v-else>
+                                {{sumCours}}
+                            </td>
+
+                        </tr>
+                        </tfoot>
+
+                    </table>
+
+                    <div class="checkbox">
+                        <label><input type="checkbox" v-model="mynotebook"> Со своим ноутбуком</label>
+                    </div>
+                    <div class="checkbox">
+                        <label class="checkbox"><input type="checkbox" v-model="myfriend"> Вместе дешевле</label>
+                    </div>
+                    <div class="checkbox">
+                        <label><input type="checkbox" v-model="promocod"> У меня есть промокод</label>
+                    </div>
+                </template>
+
+                <div v-else class="alert alert-info">Курсы не выбраны</div>
+                <!--                placeholder="ITPROF" v-model="promo"-->
+                <input v-if="promocod" type="text" placeholder="ITPROF" v-model="promo">
+                <button v-if="promocod" type="button" @click="applaycod">Применить</button>
+                <p v-if="error" :class="applaycodColor">{{text}}</p>
+
+                <!--                <h2>&lt;!&ndash;Promo-Cod:&ndash;&gt; {{promo | PromoCodSend}}</h2>-->
+
+                <!--                <button class="btn&#45;&#45;like" v-if="selectedCurses.length > 0" type="button">Оплатить</button>-->
+<!--                <h1>{{discountStyle}}</h1>-->
+                <!--                <h1>arrTax : {{arrTax}}</h1>-->
+<!--                <h1>changePrice : {{changePrice}}</h1>-->
+<!--                <h1>{{arrTax}}</h1>-->
+
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="./calc.js"></script>
+</body>
+</html>
